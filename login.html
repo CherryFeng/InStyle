@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>登录界面</title>
+		<link rel="stylesheet" href="css/login.css" />
+        <link rel="stylesheet" href="css/footer.css"/>
+		<script src="vendor/jquery-1.10.0.js"></script>
+		<script src="vendor/jquery.validate-1.13.1.js"></script>
+		<script type="text/javascript">
+			window.onload=function(){
+				var tabs = document.getElementById("infobox");
+				var uls = tabs.getElementsByTagName("ul")[0];
+				var lis = uls.getElementsByTagName("li");
+				var divs = $(tabs).children("div");
+				for(var i=0;i<lis.length;i++){
+					lis[i].index = i;
+					lis[i].onclick=function(){
+						for(var j=0;j<lis.length;j++){
+							lis[j].className="";
+							divs[j].className="hide";
+						}
+						this.className="on";
+						divs[this.index].className="";
+					}
+				};
+			}
+		</script>
+	</head>
+	<body>
+    	<div class="logo">
+            <div class="logo_left">
+                <img src="img/main/logo.jpg"/>
+                <h1>InStyle</h1>
+            </div><!--logo_left结束，右侧部分待添加-->
+        </div>
+		<div class="background">
+		    <div id="infobox">
+		    	<ul>
+				    <li class ="on">普通登录</li>
+				    <li>手机快速登录</li>
+			    </ul>
+			    <br />
+			    <div>
+			    	<form id="logininfo">
+		            <p id="errorinfo1"><img src="img/warning.png" class="warningimg"/>&nbsp;&nbsp;</p>
+                        <div class="userpass">
+                        	<img src="img/user.jpg" class="userpassimg"/>
+					        <input  type="text"  id="userpassinput"  name="username"/><br><br>
+					        <img src="img/pass.jpg" class="userpassimg" />
+				            <input  name="password" id="userpassinput" type="password" />
+				            <br/><br />
+                        </div>
+                        
+                        <div class="others">
+                        	<input type="checkbox" class="autologinbtn" name="autologinbtn"/>
+				            <p class="autologintxt" >2周内自动登录</p>
+				            <a href="#" class="forgetpass">忘记密码?</a><br />
+				            <input type="submit" value="登录" class="loginbtn" /><br />
+				            <a href="#" class="common">海外手机登录</a>
+				            <a href="#" class="register">新用户注册</a>
+				            <br /><br />
+				            <p class="common">你也可以用以下方式登录：</p>
+				            <img src="img/otherlogin.jpg" /><br /><br />
+                        </div>
+		            </form>
+			    </div>
+			    
+		        <div class="hide">
+		        	<form id="mobilelogin">
+		        		<p id="errorinfo2"><img src="img/warning.png" class="warningimg"/>&nbsp;&nbsp;</p>
+		        		<div class="mobile">
+		        			<select class="selects" name="selects">
+		        				<option>中国</option>
+		        				<option>英国</option>
+					            <option>美国</option>
+				            </select>
+				            <input type="text" id="mobilenuminput" name="mobilenumber"/><br /><br />
+				            <input type="text" class="confirminput" name="dynpassword"/><br /><br />
+				            <input type="submit"  class="getconfirmmsg"  value="获取手机动态验证码"/>
+				            <br /><br/>
+				            <input type="checkbox" class="autologinbtn" name="autologin"/>
+				            <p class="autologintxt">2周内自动登录</p>
+				            <a href="#" class="forgetpass">忘记密码?</a><br />
+				            <input type="submit" value="登录" class="loginbtn" /><br />
+				            <a href="#" class="common">海外手机登录</a>
+				            <a href="#" class="register">新用户注册</a>
+				            <br /><br />
+				            <p class="common">你也可以用以下方式登录：</p>
+				            <img src="img/otherlogin.jpg" /><br /><br />
+		        	    </div>
+		        	</form>
+			    </div>
+            </div>
+		</div>
+		<div class="copyright">
+            <div class="copyright_content">
+                <ul>
+                    <li>关于
+                        <ul>
+                            <li>品牌故事</li>
+                            <li>联系我们</li>
+                            <li>加入我们</li>
+                            <li>版权声明</li>
+                        </ul>
+                    </li>
+                    <li>关注
+                        <ul>
+                            <li>新浪微博</li>
+                            <li>腾讯微博</li>
+                            <li>企业微信</li>
+                            <li>QQ空间</li>
+                        </ul>
+                    </li>
+                    <li>留言
+                        <ul>
+                            <li>意见反馈</li>
+                            <li>问题留言</li>
+                            <li>媒体联络</li>
+                            <li>在线客服</li>
+                        </ul>
+                    </li>
+                </ul><!--最外层的ul结束-->
+            </div><!--copyright_content结束-->
+        </div><!--coryright结束-->
+		<script>
+			$(document).ready(function(){
+				$.validator.setDefaults({
+					debug:true
+				});
+				//一般登录的验证规则
+				$("#logininfo").validate({
+					rules:{
+						username:{
+							required:true
+						},
+						password:{
+							required:{
+								depends:function(element){
+									return $("#userpassinput").is(":filled");
+								}
+							}
+						}
+					},
+					messages:{
+							username:{
+								required:"用户名不能为空"	
+							},
+							password:{
+								required:"密码不能为空"
+							}
+					},
+					groups:{
+						login:"username password "
+				  },
+				    errorLabelContainer:$("#errorinfo1") //设置错误信息的存放位置，放在errorinfo1处
+				});
+				
+				//手机快速登录的验证规则
+				$("#mobilelogin").validate({
+					rules:{
+						mobilenumber:{
+							required:true,
+							minlength:11,
+							maxlength:11
+						},
+						dynpassword:{
+							required:{
+								/*通过depends 可以解决错误信息没有了，
+								 * 但errorinfo1的显示在页面中(display:block而不是display:none)
+								 * 手机快速登录同理
+								 */
+								depends:function(element){   
+									return $("#mobilenuminput").is(":filled");
+								}
+							}
+						},
+					},
+					messages:{
+							mobilenumber:{
+								required:"手机号不能为空",
+								minlength:"请输入正确的手机号",
+								maxlength:"请输入正确的手机号"
+							},
+							dynpassword:{
+								required:"验证密码不能为空"
+							}
+					},
+					groups:{
+						login:"mobilenumber dynpassword "  //把错误放到一个组里面
+				   },
+				    errorLabelContainer:$("#errorinfo2"),
+				    
+				});
+				/*当点击登录按钮时，将错误信息所在的<p>显示出来
+				 * 此处曾有一个bug，但通过depends解决了
+				 * bug：当点击登录按钮时，错误信息显示出来，提示“密码不能为空，”
+				 * 当向密码框中输入时，错误信息内容变成空
+				 * 但错误信息所在的p标签依旧是display:block状态（只有背景，没有文字）
+				 */
+				$(".loginbtn").click(function(){   
+					if(!$("#logininfo").valid()){
+						$("#errorinfo1").css("display","block");
+				    }else{
+				    	$("#errorinfo1").css("display","none");
+				    }
+				    if(!$("#mobilelogin").valid()){
+					    $("#errorinfo2").css("display","block");
+				    }else{
+				    	$("#errorinfo2").css("display","none");
+				    }
+				});
+				
+			});
+		</script>
+	</body>
+</html>
